@@ -10,7 +10,7 @@
  * @param {string} storeName Name of the store.
  * @param {string} imageURL Path to a relevant image.
  */
-var Store = function( storeName, imageURL )
+var Store = function( storeName, imageURL , inventory)
 {
 	// Set the name of the store. Default to 'New Store'.
 	this.name = ( storeName || 'New Store' );
@@ -19,8 +19,8 @@ var Store = function( storeName, imageURL )
 	this.imageURL = ( imageURL  || '' );
 
 	// Create an inventory object for the store.
-	this.inventory = new Inventory();	
-}
+	this.inventory = ( inventory || new Inventory() );
+};
 
 /**
  * @constructor
@@ -30,7 +30,7 @@ var Inventory = function( items )
 {
 	// Load in items into an inventory. Default to an empty array.
 	this.items = ( items || new Array() );
-}
+};
 
 /**
  * Sell a certain number of the current item.
@@ -39,7 +39,7 @@ var Inventory = function( items )
 Inventory.prototype.addItem = function ( item )
 {
 	this.items.push( item );
-}
+};
 
 /**
  * @constructor
@@ -67,7 +67,7 @@ var Item = function( itemName, itemPrice, quantity, imageURL)
 
 	// Track how much this item has earned us.
 	this.earnings = 0;
-}
+};
 
 /**
  * Sell a certain number of the current item.
@@ -76,6 +76,10 @@ var Item = function( itemName, itemPrice, quantity, imageURL)
  */
 Item.prototype.sell = function( count )
 {
+
+	// Default to 1 if no count is specified.
+	count = ( count || 1 );
+
 	if ( this.quantity < count )
 	{
 		return false;
@@ -88,4 +92,4 @@ Item.prototype.sell = function( count )
 
 		return true;
 	}
-}
+};

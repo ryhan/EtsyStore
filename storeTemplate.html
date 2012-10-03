@@ -15,13 +15,26 @@
   <script src="js/libs/underscore.min.js"></script>
 
   <!-- Javascript Logic -->
-  <script src="js/controllers/constructors.js"></script>
+  <script src="js/constructors.js"></script>
   <script src="js/controllers/storeController.js"></script>
 
 </head>
 <body>
 
   <!-- Begin Content -->
+  <div class="stores" ng-controller="StoreCtrl">
+    <div class="store" ng-repeat="store in stores">
+      <img src="{{store.imageURL}}"/>
+      <span>{{store.name}}</span>
+      <div class="inventory">
+          <div class="item" ng-repeat="item in store.inventory.items">
+            <img src="{{item.imageURL}}"/>
+            <span>{{item.name}}</span>
+            <span>${{item.price}}</span>
+          </div>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
