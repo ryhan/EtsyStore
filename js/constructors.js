@@ -1,0 +1,91 @@
+/* 
+ * constructors.js 
+ *
+ * Store, Inventory, and Item constructors.
+ * Written by Ryhan Hassan
+ */
+
+/**
+ * @constructor
+ * @param {string} storeName Name of the store.
+ * @param {string} imageURL Path to a relevant image.
+ */
+var Store = function( storeName, imageURL )
+{
+	// Set the name of the store. Default to 'New Store'.
+	this.name = ( storeName || 'New Store' );
+
+	// Set the URL of a descriptive image of the store.
+	this.imageURL = ( imageURL  || '' );
+
+	// Create an inventory object for the store.
+	this.inventory = new Inventory();	
+}
+
+/**
+ * @constructor
+ * @param {Array} items Array of items
+ */
+var Inventory = function( items )
+{
+	// Load in items into an inventory. Default to an empty array.
+	this.items = ( items || new Array() );
+}
+
+/**
+ * Sell a certain number of the current item.
+ * @param {Object} item The item being added to the inventory
+ */
+Inventory.prototype.addItem = function ( item )
+{
+	this.items.push( item );
+}
+
+/**
+ * @constructor
+ * @param {string} itemName Name of an item.
+ * @param {number} itemPrice Cost of one item in dollars.
+ * @param {integer} quantity Number of items available for sale.
+ * @param {string} imageURL Path to a relevant image.
+ */
+var Item = function( itemName, itemPrice, quantity, imageURL)
+{
+	// Set the name of an item. Default to 'New Item'.
+	this.name = ( itemName || 'New Item' );
+
+	// Set the dollar price of an item. Default to $0.
+	this.price = ( itemPrice || 0 );
+
+	// Set the quantity of this item that is available. Default to 1.
+	this.quantity = ( quantity || 1 );
+
+	// Set the URL of a descriptive image of the item.
+	this.imageURL = ( imageURL || '' );
+
+	// Track the number of this item that has been already sold.
+	this.soldCount = 0;
+
+	// Track how much this item has earned us.
+	this.earnings = 0;
+}
+
+/**
+ * Sell a certain number of the current item.
+ * @param {integer} count The number of items requested to be sold.
+ * @returns {boolean} Whether the transaction went through.
+ */
+Item.prototype.sell = function( count )
+{
+	if ( this.quantity < count )
+	{
+		return false;
+	}
+	else
+	{
+		this.quantity -= count;
+		this.soldCount += count;
+		this.earnings += ( count * this.price );
+
+		return true;
+	}
+}
