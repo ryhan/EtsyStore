@@ -78,8 +78,8 @@ var Item = function( itemName, itemPrice, quantity, imageURL)
 	// Track how much this item has earned us.
 	this.earnings = 0;
 
-	// Make this item active
-	this.active = true;
+	// Make this item active if there are items remaining.
+	this.active = function(){ return (this.quantity > 0);};
 
 };
 
@@ -102,12 +102,6 @@ Item.prototype.buy = function( count )
 		this.quantity -= count;
 		this.soldCount += count;
 		this.earnings += ( count * this.price );
-
-		if (this.quantity == 0)
-		{
-			this.active = false;
-		}
-
 		return true;
 	}
 };

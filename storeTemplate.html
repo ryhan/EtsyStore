@@ -21,9 +21,10 @@
 </head>
 <body>
 
-  <!-- Begin Content -->
   <div class="stores" ng-controller="StoreCtrl">
     <div class="store" ng-repeat="store in stores">
+
+      <!-- Sidebar -->
       <aside> 
          <ul class="lined">
             <li class="head">
@@ -36,16 +37,22 @@
                 Inventory
             </li>
             <li ng-repeat="item in store.inventory.items"
-                data-available="{{item.active}}" >
-              {{item.quantity}}x {{item.name}}
+                data-available="{{item.active()}}" >
+
+              <!--{{item.quantity}}x {{item.name}}-->
+
+              <input type="number" ng-model="item.quantity"/>
+              <input type="text" ng-model="item.name"/>
             </li>
          </ul>
       </aside>
+
+      <!-- Listing of items within a store -->
       <div class="inventory">
           <div class="item" 
                 ng-repeat="item in store.inventory.items"
                 ng-click="item.buy()" 
-                data-active="{{item.active}}">
+                data-active="{{item.active()}}">
 
             <img src="{{item.imageURL}}" />
             <div class="desc">
