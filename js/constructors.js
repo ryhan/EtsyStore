@@ -20,6 +20,10 @@ var Store = function( storeName, imageURL , inventory)
 
 	// Create an inventory object for the store.
 	this.inventory = ( inventory || new Inventory() );
+
+	// Make this store active
+	this.active = true;
+
 };
 
 /**
@@ -30,6 +34,12 @@ var Inventory = function( items )
 {
 	// Load in items into an inventory. Default to an empty array.
 	this.items = ( items || new Array() );
+
+	this.earnings = function()
+	{
+		var sum = function( a, b ){ return a + b; };
+		return _.reduce( _.pluck( this.items, 'earnings'), sum);
+	};
 };
 
 /**
@@ -67,16 +77,19 @@ var Item = function( itemName, itemPrice, quantity, imageURL)
 
 	// Track how much this item has earned us.
 	this.earnings = 0;
+
+	// Make this item active
+	this.active = true;
+
 };
 
 /**
- * Sell a certain number of the current item.
+ * Buy a certain number of the current item.
  * @param {integer} count The number of items requested to be sold.
  * @returns {boolean} Whether the transaction went through.
  */
-Item.prototype.sell = function( count )
+Item.prototype.buy = function( count )
 {
-
 	// Default to 1 if no count is specified.
 	count = ( count || 1 );
 
@@ -89,6 +102,11 @@ Item.prototype.sell = function( count )
 		this.quantity -= count;
 		this.soldCount += count;
 		this.earnings += ( count * this.price );
+
+		if (this.quantity == 0)
+		{
+			this.active = false;
+		}
 
 		return true;
 	}
